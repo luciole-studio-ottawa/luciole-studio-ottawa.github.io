@@ -1,0 +1,580 @@
+<!doctype html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Luciole Studio</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Luciole Studio turns your own photos into short video ads for Ottawa restaurants and small businesses. Clear monthly prices, fast delivery, English and French.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
+<style>
+  /* Layout: a night-teal hero band where fireflies drift around the headline, then calm paper sections; one glow accent used sparingly. */
+  :root {
+    --paper: #f3f6f5;
+    --surface: #ffffff;
+    --ink: #0e2f3a;
+    --ink-soft: #4a626b;
+    --line: #d4dfdd;
+    --glow: #f2a900;
+    --glow-ink: #3a2700;
+    --night: #0e2f3a;
+    --night-deep: #0a242d;
+    --on-night: #f1f5f3;
+    --on-night-soft: #b6cbca;
+    --focus: #f2a900;
+    --head: "Bricolage Grotesque", "Trebuchet MS", system-ui, sans-serif;
+    --body: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --radius: 14px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #0b1b21; --surface: #112830; --ink: #e6efed; --ink-soft: #9db3b6;
+      --line: #23424b; --glow: #f5b82e; --glow-ink: #2e1f00; --night: #071a20; --night-deep: #04121a;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #0b1b21; --surface: #112830; --ink: #e6efed; --ink-soft: #9db3b6;
+    --line: #23424b; --glow: #f5b82e; --glow-ink: #2e1f00; --night: #071a20; --night-deep: #04121a;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--body); font-size: 17px; line-height: 1.6; }
+  a { color: inherit; }
+  :focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; border-radius: 4px; }
+  h1, h2, h3 { font-family: var(--head); text-wrap: balance; margin: 0; letter-spacing: -0.015em; }
+  p { margin: 0; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+  .eyebrow { font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-soft); }
+
+  /* Header */
+  body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--night); }
+  .top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: color-mix(in srgb, var(--night) 92%, transparent); backdrop-filter: blur(8px); color: var(--on-night); }
+  .top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 14px; flex-wrap: wrap; }
+  .brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; font-family: var(--head); font-weight: 800; font-size: 20px; letter-spacing: -0.01em; }
+  .brand .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--glow); box-shadow: 0 0 0 4px color-mix(in srgb, var(--glow) 22%, transparent), 0 0 18px 4px color-mix(in srgb, var(--glow) 55%, transparent); }
+  .brand span.light { font-weight: 500; opacity: .8; }
+  nav { display: flex; align-items: center; gap: 22px; flex-wrap: wrap; }
+  nav a { text-decoration: none; color: var(--on-night-soft); font-weight: 500; font-size: 15px; }
+  nav a:hover { color: var(--on-night); }
+  .lang { display: inline-flex; border: 1px solid color-mix(in srgb, var(--on-night) 30%, transparent); border-radius: 999px; padding: 3px; }
+  .lang button { all: unset; cursor: pointer; font-size: 13px; font-weight: 700; padding: 4px 10px; border-radius: 999px; color: var(--on-night-soft); }
+  .lang button[aria-pressed="true"] { background: var(--on-night); color: var(--night); }
+  .lang button:focus-visible { outline: 3px solid var(--focus); }
+
+  /* Hero */
+  .hero { position: relative; background: radial-gradient(120% 90% at 75% 20%, color-mix(in srgb, var(--glow) 10%, var(--night)) 0%, var(--night) 45%, var(--night-deep) 100%); color: var(--on-night); overflow: hidden; }
+  #flies { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+  .hero .wrap { position: relative; display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr); gap: 56px; align-items: center; padding-block: 72px 88px; }
+  .hero .eyebrow { color: var(--glow); }
+  .hero h1 { font-size: clamp(2.5rem, 6vw, 4.4rem); line-height: 1; font-weight: 800; margin: 16px 0 22px; max-width: 13ch; }
+  .hero h1 em { font-style: normal; color: var(--glow); text-shadow: 0 0 28px color-mix(in srgb, var(--glow) 45%, transparent); }
+  .hero .lead { color: var(--on-night-soft); font-size: 1.15rem; max-width: 46ch; margin-bottom: 30px; }
+  .meaning { margin-top: 26px; font-size: 14px; color: var(--on-night-soft); display: flex; gap: 10px; align-items: baseline; }
+  .meaning b { font-family: var(--head); color: var(--on-night); font-weight: 700; }
+
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; padding: 14px 22px; border-radius: 10px; text-decoration: none; border: 2px solid transparent; cursor: pointer; font-size: 16px; font-family: var(--body); }
+  .btn.primary { background: var(--glow); color: var(--glow-ink); }
+  .btn.primary:hover { filter: brightness(1.08); }
+  .btn.ghost { border-color: color-mix(in srgb, var(--on-night) 45%, transparent); color: var(--on-night); background: transparent; }
+  .btn.ghost:hover { background: color-mix(in srgb, var(--on-night) 10%, transparent); }
+
+  /* Phone mock: an example of the ad format */
+  .phone-col { display: grid; justify-items: center; gap: 12px; }
+  .phone { width: min(270px, 72vw); aspect-ratio: 9 / 16; max-width: 100%; border-radius: 34px; padding: 9px; background: #061418; box-shadow: 0 30px 60px rgba(0,0,0,.45), 0 0 0 1px rgba(255,255,255,.06); }
+  .screen { position: relative; width: 100%; height: 100%; border-radius: 26px; overflow: hidden; background: radial-gradient(90% 60% at 50% 38%, #3b2a1c 0%, #1b120c 70%); }
+  .plate { position: absolute; left: 50%; top: 40%; width: 86%; aspect-ratio: 1; transform: translate(-50%, -50%) scale(1); border-radius: 50%;
+    background:
+      radial-gradient(circle at 46% 44%, #e9a24a 0 13%, transparent 14%),
+      radial-gradient(circle at 58% 52%, #c9622d 0 12%, transparent 13%),
+      radial-gradient(circle at 40% 58%, #7fa14a 0 8%, transparent 9%),
+      radial-gradient(circle at 62% 38%, #9cbf5a 0 5%, transparent 6%),
+      radial-gradient(circle at 52% 50%, #f4e6cf 0 34%, transparent 35%),
+      radial-gradient(circle at 50% 50%, #fbf6ee 0 47%, #d8cfc1 48% 50%, transparent 51%);
+    animation: kenburns 9s ease-in-out infinite alternate; }
+  .steam { position: absolute; left: 50%; top: 14%; width: 40%; height: 18%; transform: translateX(-50%); background: radial-gradient(50% 60% at 50% 100%, rgba(255,255,255,.18), transparent 70%); filter: blur(6px); animation: steam 4s ease-in-out infinite; }
+  .tag { position: absolute; left: 12px; right: 12px; font-family: var(--head); color: #fff; }
+  .tag.t1 { bottom: 92px; font-size: 22px; font-weight: 800; line-height: 1.05; animation: rise 9s ease-in-out infinite; }
+  .tag.t2 { bottom: 64px; font-size: 14px; font-weight: 600; color: #ffd36b; animation: rise 9s .4s ease-in-out infinite; }
+  .tag.t3 { bottom: 18px; left: 12px; right: auto; font-family: var(--body); font-size: 13px; font-weight: 700; background: #f2a900; color: #3a2700; padding: 8px 14px; border-radius: 999px; animation: rise 9s .8s ease-in-out infinite; }
+  .shade { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,.72) 0%, rgba(0,0,0,0) 45%); }
+  .phone-note { font-size: 13px; color: var(--on-night-soft); text-align: center; max-width: 30ch; }
+  @keyframes kenburns { from { transform: translate(-50%, -50%) scale(1); } to { transform: translate(-50%, -52%) scale(1.08); } }
+  @keyframes steam { 0%,100% { opacity: .4; transform: translateX(-50%) translateY(0); } 50% { opacity: .9; transform: translateX(-50%) translateY(-8px); } }
+  @keyframes rise { 0% { opacity: 0; transform: translateY(8px); } 10%, 100% { opacity: 1; transform: none; } }
+
+  /* Sections */
+  section { padding-block: 84px; }
+  section + section { border-top: 1px solid var(--line); }
+  .section-head { display: grid; gap: 12px; margin-bottom: 40px; max-width: 62ch; }
+  .section-head h2 { font-size: clamp(1.8rem, 3.6vw, 2.6rem); line-height: 1.08; }
+  .section-head p { color: var(--ink-soft); font-size: 1.08rem; }
+
+  .proof { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 28px; }
+  .proof div { display: grid; gap: 6px; align-content: start; }
+  .proof h3 { font-size: 1.15rem; }
+  .proof p { color: var(--ink-soft); font-size: 15.5px; }
+  .proof .mark { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: color-mix(in srgb, var(--glow) 18%, transparent); color: var(--ink); margin-bottom: 4px; }
+  .proof svg { width: 16px; height: 16px; }
+
+  .steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; counter-reset: step; }
+  .steps li { counter-increment: step; display: grid; gap: 8px; align-content: start; padding-top: 18px; border-top: 2px solid var(--ink); }
+  .steps li::before { content: counter(step); font-family: var(--head); font-weight: 800; font-size: 2rem; line-height: 1; color: var(--glow); }
+  .steps h3 { font-size: 1.2rem; }
+  .steps p { color: var(--ink-soft); font-size: 15.5px; }
+  .steps .time { font-size: 13px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-soft); }
+
+  .plans { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; align-items: stretch; }
+  .plan { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 28px 26px; display: grid; grid-template-rows: auto auto auto 1fr auto; gap: 10px; min-width: 0; }
+  .plan.rec { border: 2px solid var(--ink); position: relative; }
+  .badge { justify-self: start; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; background: var(--glow); color: var(--glow-ink); padding: 4px 10px; border-radius: 999px; }
+  .badge.quiet { background: transparent; color: var(--ink-soft); border: 1px solid var(--line); }
+  .plan h3 { font-size: 1.55rem; }
+  .plan .pitch { color: var(--ink-soft); font-size: 15.5px; }
+  .price { font-family: var(--head); font-weight: 800; font-size: 2.4rem; line-height: 1; font-variant-numeric: tabular-nums; }
+  .price small { font-family: var(--body); font-size: 15px; font-weight: 500; color: var(--ink-soft); }
+  .plan ul { list-style: none; padding: 0; margin: 8px 0 0; display: grid; gap: 9px; align-content: start; }
+  .plan li { display: grid; grid-template-columns: 18px minmax(0, 1fr); gap: 10px; font-size: 15.5px; }
+  .plan li::before { content: ""; width: 8px; height: 8px; margin-top: 8px; border-radius: 50%; background: var(--glow); box-shadow: 0 0 8px color-mix(in srgb, var(--glow) 70%, transparent); }
+  .plan .fine { font-size: 13.5px; color: var(--ink-soft); border-top: 1px solid var(--line); padding-top: 12px; margin-top: 8px; }
+  .note { margin-top: 22px; color: var(--ink-soft); font-size: 14.5px; max-width: 75ch; }
+
+  .sample { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; align-items: start; }
+  .sample .big { font-family: var(--head); font-size: clamp(2rem, 4.4vw, 3rem); line-height: 1.05; font-weight: 800; }
+  .sample .big em { font-style: normal; background: linear-gradient(transparent 62%, color-mix(in srgb, var(--glow) 45%, transparent) 62%); }
+  .sample-list { display: grid; gap: 14px; }
+  .sample-list p { padding-left: 16px; border-left: 2px solid var(--line); color: var(--ink-soft); }
+  .sample-list b { color: var(--ink); }
+
+  .faq { display: grid; gap: 0; max-width: 780px; }
+  .faq details { border-bottom: 1px solid var(--line); padding-block: 18px; }
+  .faq details:first-child { border-top: 1px solid var(--line); }
+  .faq summary { cursor: pointer; font-family: var(--head); font-weight: 700; font-size: 1.12rem; list-style: none; display: flex; justify-content: space-between; gap: 16px; }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after { content: "+"; font-weight: 500; color: var(--ink-soft); }
+  .faq details[open] summary::after { content: "–"; }
+  .faq details p { margin-top: 10px; color: var(--ink-soft); max-width: 65ch; }
+
+  .contact { background: var(--night); color: var(--on-night); border-radius: 22px; padding: clamp(28px, 5vw, 56px); display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: 40px; align-items: start; }
+  .contact h2 { font-size: clamp(1.9rem, 4vw, 2.8rem); line-height: 1.05; }
+  .contact .lead { color: var(--on-night-soft); margin: 14px 0 26px; max-width: 46ch; }
+  .channels { display: grid; gap: 12px; }
+  .channel { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 14px 16px; border-radius: 12px; background: color-mix(in srgb, var(--on-night) 7%, transparent); border: 1px solid color-mix(in srgb, var(--on-night) 14%, transparent); }
+  .channel .label { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--on-night-soft); }
+  .channel .value { font-weight: 700; font-size: 17px; overflow-wrap: anywhere; user-select: all; }
+  .copy { all: unset; cursor: pointer; font-size: 13px; font-weight: 700; padding: 8px 12px; border-radius: 8px; background: var(--on-night); color: var(--night); }
+  .copy:focus-visible { outline: 3px solid var(--focus); }
+  .area { font-size: 14px; color: var(--on-night-soft); margin-top: 6px; }
+
+  footer { padding-block: 34px 50px; color: var(--ink-soft); font-size: 14px; }
+  footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+
+  @media (max-width: 900px) {
+    .hero .wrap, .sample, .contact { grid-template-columns: minmax(0, 1fr); }
+    .hero .wrap { padding-block: 48px 64px; gap: 40px; }
+    .proof { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .plans, .steps { grid-template-columns: minmax(0, 1fr); }
+    nav a.hide-sm { display: none; }
+  }
+  @media (max-width: 480px) {
+    .proof { grid-template-columns: minmax(0, 1fr); }
+    section { padding-block: 60px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .plate, .steam, .tag { animation: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Luciole Studio, back to top"><span class="dot" aria-hidden="true"></span>Luciole <span class="light">Studio</span></a>
+    <nav aria-label="Main">
+      <a class="hide-sm" href="#how" data-i18n="nav_how">How it works</a>
+      <a href="#packages" data-i18n="nav_packages">Packages</a>
+      <a class="hide-sm" href="#faq" data-i18n="nav_faq">Questions</a>
+      <a href="#contact" data-i18n="nav_contact">Contact</a>
+      <div class="lang" role="group" aria-label="Language">
+        <button type="button" id="lang-en" data-lang="en" aria-pressed="true">EN</button>
+        <button type="button" id="lang-fr" data-lang="fr" aria-pressed="false">FR</button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <div class="hero">
+    <canvas id="flies" aria-hidden="true"></canvas>
+    <div class="wrap">
+      <div>
+        <p class="eyebrow" data-i18n="hero_eyebrow">Video ads for Ottawa restaurants and small businesses</p>
+        <h1 data-i18n-html="hero_title">Give your product <em>the spotlight.</em></h1>
+        <p class="lead" data-i18n="hero_lead">We turn your own photos into short video ads for Instagram, TikTok and delivery apps. Clear monthly prices, drafts within days, and you approve every video before it goes out.</p>
+        <div class="actions">
+          <a class="btn primary" href="#contact" data-i18n="cta_sample">Get a free sample ad</a>
+          <a class="btn ghost" href="#packages" data-i18n="cta_packages">See packages</a>
+        </div>
+        <p class="meaning"><b>luciole</b> <span data-i18n="meaning">French for firefly: a small light that makes people stop and look.</span></p>
+      </div>
+      <div class="phone-col">
+        <div class="phone" role="img" aria-label="Example of a vertical video ad: a plated dish with the headline Maple glazed salmon, the price and a booking button">
+          <div class="screen">
+            <div class="plate"></div>
+            <div class="steam"></div>
+            <div class="shade"></div>
+            <div class="tag t1" data-i18n="mock_dish">Maple glazed salmon</div>
+            <div class="tag t2" data-i18n="mock_price">$19 · Tonight only</div>
+            <div class="tag t3" data-i18n="mock_cta">Book a table →</div>
+          </div>
+        </div>
+        <p class="phone-note" data-i18n="phone_note">An example of the format. Your ads are built from photos of your own dishes.</p>
+      </div>
+    </div>
+  </div>
+
+  <section>
+    <div class="wrap">
+      <div class="proof">
+        <div>
+          <span class="mark" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="12" height="10" rx="2"/><circle cx="6" cy="7" r="1.4" fill="currentColor" stroke="none"/><path d="M3 12l3.5-3 2.5 2 2-1.5 2.5 2.5"/></svg></span>
+          <h3 data-i18n="p1_t">Your real photos</h3>
+          <p data-i18n="p1_d">Every ad starts from pictures of your dishes and your space, so it looks like your place, not a stock image.</p>
+        </div>
+        <div>
+          <span class="mark" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="6"/><path d="M8 4.5V8l2.5 1.5"/></svg></span>
+          <h3 data-i18n="p2_t">Drafts within days</h3>
+          <p data-i18n="p2_d">First drafts within 5 business days of receiving your photos, not the 3 to 10 weeks of a film shoot.</p>
+        </div>
+        <div>
+          <span class="mark" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8.5l3 3 7-7"/></svg></span>
+          <h3 data-i18n="p3_t">You approve everything</h3>
+          <p data-i18n="p3_d">Nothing goes out until you say yes. You own the final videos once they are paid for.</p>
+        </div>
+        <div>
+          <span class="mark" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 4h7M5.5 2v2M3.5 4c.5 3 2.5 5 5 6M7.5 4c-.5 2.5-2.5 5-5 6"/><path d="M9 14l3-7 3 7M10 12h4"/></svg></span>
+          <h3 data-i18n="p4_t">English and French</h3>
+          <p data-i18n="p4_d">Captions in English, French or both, for Ottawa and Gatineau customers.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="how">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow" data-i18n="how_eyebrow">How it works</p>
+        <h2 data-i18n="how_title">About five minutes of your time. We do the rest.</h2>
+      </div>
+      <ol class="steps">
+        <li>
+          <span class="time" data-i18n="s1_time">5 minutes</span>
+          <h3 data-i18n="s1_t">Tell us about your place</h3>
+          <p data-i18n="s1_d">Send 3 to 5 photos and fill in a short form: your best dishes, this month's special, and your style.</p>
+        </li>
+        <li>
+          <span class="time" data-i18n="s2_time">Within 5 business days</span>
+          <h3 data-i18n="s2_t">We create your videos</h3>
+          <p data-i18n="s2_d">We animate your photos into short ads with captions and music, and send you the drafts.</p>
+        </li>
+        <li>
+          <span class="time" data-i18n="s3_time">Your call</span>
+          <h3 data-i18n="s3_t">You approve and post</h3>
+          <p data-i18n="s3_d">Ask for changes, approve, and receive files ready for Instagram, TikTok, Facebook and delivery apps.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="packages">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow" data-i18n="pk_eyebrow">Packages</p>
+        <h2 data-i18n="pk_title">Clear prices. No long contracts.</h2>
+        <p data-i18n="pk_sub">Prices in Canadian dollars, plus HST. Monthly packages can be cancelled with 30 days' notice.</p>
+      </div>
+      <div class="plans">
+        <article class="plan">
+          <span class="badge quiet" data-i18n="spark_badge">Monthly</span>
+          <h3>Spark</h3>
+          <p class="pitch" data-i18n="spark_pitch">Four fresh videos a month, ready to post.</p>
+          <div>
+            <div class="price">$249 <small data-i18n="per_month">/ month</small></div>
+            <ul>
+              <li data-i18n="spark_1">4 vertical videos, about 10 seconds each</li>
+              <li data-i18n="spark_2">Made from your photos, with captions and licensed music</li>
+              <li data-i18n="spark_3">1 round of changes per video</li>
+            </ul>
+          </div>
+          <p class="fine" data-i18n="spark_fine">Month to month. Drafts within 5 business days.</p>
+        </article>
+        <article class="plan rec">
+          <span class="badge" data-i18n="glow_badge">Our recommendation</span>
+          <h3>Glow</h3>
+          <p class="pitch" data-i18n="glow_pitch">Eight videos and a plan for when to post them.</p>
+          <div>
+            <div class="price">$449 <small data-i18n="per_month">/ month</small></div>
+            <ul>
+              <li data-i18n="glow_1">8 videos, about 12 seconds, vertical and square</li>
+              <li data-i18n="glow_2">A monthly special or promo video and a delivery-app clip</li>
+              <li data-i18n="glow_3">Captions in English, French or both</li>
+              <li data-i18n="glow_4">A posting plan and a monthly check-in</li>
+              <li data-i18n="glow_5">2 rounds of changes per video</li>
+            </ul>
+          </div>
+          <p class="fine" data-i18n="glow_fine">Month to month, or $399 a month on a 3-month commitment.</p>
+        </article>
+        <article class="plan">
+          <span class="badge quiet" data-i18n="gm_badge">One time</span>
+          <h3>Grand Moment</h3>
+          <p class="pitch" data-i18n="gm_pitch">A full AI-powered campaign for one big moment: an anniversary, a new menu, the holidays.</p>
+          <div>
+            <div class="price">$999 <small data-i18n="once">once</small></div>
+            <ul>
+              <li data-i18n="gm_1">1 hero ad, 15 to 20 seconds, with sound</li>
+              <li data-i18n="gm_2">6 short versions for each platform, in English and French</li>
+              <li data-i18n="gm_3">12 photos of your dishes restyled for the occasion</li>
+              <li data-i18n="gm_4">"Menu in motion": 10 dishes, each animated</li>
+              <li data-i18n="gm_5">Captions and a 2-week posting schedule</li>
+            </ul>
+          </div>
+          <p class="fine" data-i18n="gm_fine">50% deposit to start. Delivered within 7 business days.</p>
+        </article>
+      </div>
+      <p class="note" data-i18n="pk_note">Some clips are created with AI from your photos. We tell you which ones, and we never show a dish differently from what you serve. We sell content, not sales: we don't promise a number of customers or views.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap sample">
+      <p class="big" data-i18n-html="free_big">Your first ad is <em>free</em>. No strings attached.</p>
+      <div class="sample-list">
+        <p data-i18n-html="free_1"><b>We make one short ad</b> from your photos, at no cost.</p>
+        <p data-i18n-html="free_2"><b>It's yours to keep</b> and use, whether or not you choose a package.</p>
+        <p data-i18n-html="free_3"><b>No review required.</b> If you like the work and want to say so, that's up to you.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow" data-i18n="faq_eyebrow">Questions</p>
+        <h2 data-i18n="faq_title">What owners usually ask</h2>
+      </div>
+      <div class="faq">
+        <details><summary data-i18n="q1">Is it made with AI?</summary><p data-i18n="a1">Partly. We use AI video tools to bring your photos to life, then we edit, caption and check every video by hand. We tell you which clips are AI-generated so you can label them where platforms ask for it.</p></details>
+        <details><summary data-i18n="q2">Do you guarantee more customers?</summary><p data-i18n="a2">No. Nobody honest can. We promise the videos described in your package, delivered on time and made to look like your place.</p></details>
+        <details><summary data-i18n="q3">Who owns the videos?</summary><p data-i18n="a3">You do, once they are paid for. Use them anywhere, for as long as you like. Your photos and logo always stay yours.</p></details>
+        <details><summary data-i18n="q4">What do you need from me?</summary><p data-i18n="a4">3 to 5 good photos of your dishes or space, your logo if you have one, and 5 minutes for our form. If you don't have photos, tell us and we'll find a way.</p></details>
+        <details><summary data-i18n="q5">How do I pay?</summary><p data-i18n="a5">By Interac e-Transfer, in advance each month, with HST added. Grand Moment takes a 50% deposit and the rest on delivery.</p></details>
+        <details><summary data-i18n="q6">Do you only work with restaurants?</summary><p data-i18n="a6">We started with restaurants and cafés, and we also work with small businesses that sell a product they can photograph: bakeries, beauty products, shops and more.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="wrap">
+      <div class="contact">
+        <div>
+          <h2 data-i18n="c_title">Want to see your place in a video?</h2>
+          <p class="lead" data-i18n="c_lead">Tell us a little about your business and we'll make your free sample ad. Prefer to talk in person? We come to you anywhere in Ottawa.</p>
+          <div class="actions">
+            <a class="btn primary" id="form-link" href="#contact" target="_blank" rel="noopener" data-i18n="c_form">Fill in the 5-minute form</a>
+          </div>
+          <p class="area" id="form-missing" hidden data-i18n="c_form_missing">The online form opens soon. In the meantime, email or call us.</p>
+        </div>
+        <div class="channels">
+          <div class="channel">
+            <div><div class="label" data-i18n="c_email">Email</div><div class="value" id="email-value"></div></div>
+            <button type="button" class="copy" id="copy-email" data-copy="email" data-i18n="copy">Copy</button>
+          </div>
+          <div class="channel">
+            <div><div class="label" data-i18n="c_phone">Phone or text</div><div class="value" id="phone-value"></div></div>
+            <button type="button" class="copy" id="copy-phone" data-copy="phone" data-i18n="copy">Copy</button>
+          </div>
+          <p class="area" data-i18n="c_area">Ottawa, Ontario. We reply within one business day, in English or French.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span data-i18n="f_left">© 2026 Luciole Studio · Ottawa, Ontario</span>
+    <span data-i18n="f_right">Prices in CAD, plus HST</span>
+  </div>
+</footer>
+
+<script>
+  // ---- Edit these three lines with your real details ----
+  const CONTACT = {
+    email: "mn.belkessam@yahoo.com",
+    phone: "+1 613-301-1271",
+    formUrl: ""  // the LIVE link of your Google Form
+  };
+  // -------------------------------------------------------
+
+  const T = {
+    en: {
+      copy: "Copy", copied: "Copied", select: "Selected, press Ctrl+C",
+      email_missing: "Email address coming soon", phone_missing: "Phone number coming soon"
+    },
+    fr: {
+      nav_how: "Fonctionnement", nav_packages: "Forfaits", nav_faq: "Questions", nav_contact: "Contact",
+      hero_eyebrow: "Publicités vidéo pour les restaurants et petites entreprises d'Ottawa",
+      hero_title: "Mettez votre produit <em>sous les projecteurs.</em>",
+      hero_lead: "Nous transformons vos propres photos en courtes publicités vidéo pour Instagram, TikTok et les applis de livraison. Des prix mensuels clairs, des ébauches en quelques jours, et vous approuvez chaque vidéo avant sa publication.",
+      cta_sample: "Obtenir une pub gratuite", cta_packages: "Voir les forfaits",
+      meaning: "un petit insecte lumineux qui fait qu'on s'arrête pour regarder.",
+      mock_dish: "Saumon glacé à l'érable", mock_price: "19 $ · Ce soir seulement", mock_cta: "Réserver →",
+      phone_note: "Un exemple du format. Vos pubs sont créées à partir de photos de vos propres plats.",
+      p1_t: "Vos vraies photos", p1_d: "Chaque pub part de photos de vos plats et de votre salle : elle ressemble à votre établissement, pas à une image de banque.",
+      p2_t: "Des ébauches en quelques jours", p2_d: "Premières ébauches dans les 5 jours ouvrables suivant la réception de vos photos, pas 3 à 10 semaines comme pour un tournage.",
+      p3_t: "Vous approuvez tout", p3_d: "Rien n'est publié sans votre accord. Les vidéos finales vous appartiennent une fois payées.",
+      p4_t: "Anglais et français", p4_d: "Sous-titres en anglais, en français ou les deux, pour votre clientèle d'Ottawa et de Gatineau.",
+      how_eyebrow: "Fonctionnement", how_title: "Environ cinq minutes de votre temps. On s'occupe du reste.",
+      s1_time: "5 minutes", s1_t: "Parlez-nous de votre établissement", s1_d: "Envoyez 3 à 5 photos et remplissez un court formulaire : vos meilleurs plats, la promo du mois et votre style.",
+      s2_time: "En 5 jours ouvrables", s2_t: "Nous créons vos vidéos", s2_d: "Nous animons vos photos en courtes pubs avec sous-titres et musique, puis vous envoyons les ébauches.",
+      s3_time: "À vous de décider", s3_t: "Vous approuvez et publiez", s3_d: "Demandez des changements, approuvez, et recevez des fichiers prêts pour Instagram, TikTok, Facebook et les applis de livraison.",
+      pk_eyebrow: "Forfaits", pk_title: "Des prix clairs. Sans long contrat.", pk_sub: "Prix en dollars canadiens, TVH en sus. Les forfaits mensuels s'annulent avec un préavis de 30 jours.",
+      per_month: "/ mois", once: "une fois",
+      spark_badge: "Mensuel", spark_pitch: "Quatre nouvelles vidéos par mois, prêtes à publier.",
+      spark_1: "4 vidéos verticales d'environ 10 secondes", spark_2: "Créées à partir de vos photos, avec sous-titres et musique sous licence", spark_3: "1 série de modifications par vidéo",
+      spark_fine: "Au mois. Ébauches en 5 jours ouvrables.",
+      glow_badge: "Notre recommandation", glow_pitch: "Huit vidéos et un plan pour savoir quand les publier.",
+      glow_1: "8 vidéos d'environ 12 secondes, verticales et carrées", glow_2: "Une vidéo de la promo du mois et un clip pour l'appli de livraison", glow_3: "Sous-titres en anglais, en français ou les deux", glow_4: "Un calendrier de publication et un suivi mensuel", glow_5: "2 séries de modifications par vidéo",
+      glow_fine: "Au mois, ou 399 $ par mois avec un engagement de 3 mois.",
+      gm_badge: "Ponctuel", gm_pitch: "Une campagne complète propulsée par l'IA pour un grand moment : anniversaire, nouveau menu, temps des fêtes.",
+      gm_1: "1 pub principale de 15 à 20 secondes, avec son", gm_2: "6 versions courtes pour chaque plateforme, en anglais et en français", gm_3: "12 photos de vos plats revisitées pour l'occasion", gm_4: "« Menu en mouvement » : 10 plats, chacun animé", gm_5: "Sous-titres et calendrier de publication de 2 semaines",
+      gm_fine: "Dépôt de 50 % pour commencer. Livré en 7 jours ouvrables.",
+      pk_note: "Certains extraits sont créés par IA à partir de vos photos. Nous vous indiquons lesquels, et nous ne montrons jamais un plat différent de ce que vous servez. Nous vendons du contenu, pas des ventes : nous ne promettons aucun nombre de clients ou de vues.",
+      free_big: "Votre première pub est <em>gratuite</em>. Sans condition.",
+      free_1: "<b>Nous créons une courte pub</b> à partir de vos photos, sans frais.",
+      free_2: "<b>Elle est à vous</b>, que vous choisissiez un forfait ou non.",
+      free_3: "<b>Aucun avis exigé.</b> Si vous aimez le travail et voulez le dire, c'est votre choix.",
+      faq_eyebrow: "Questions", faq_title: "Ce que les propriétaires nous demandent",
+      q1: "Est-ce fait avec l'IA?", a1: "En partie. Nous utilisons des outils vidéo d'IA pour animer vos photos, puis nous montons, sous-titrons et vérifions chaque vidéo nous-mêmes. Nous vous indiquons quels extraits sont générés par IA pour que vous puissiez les identifier là où les plateformes le demandent.",
+      q2: "Garantissez-vous plus de clients?", a2: "Non. Personne d'honnête ne le peut. Nous promettons les vidéos prévues dans votre forfait, livrées à temps et fidèles à votre établissement.",
+      q3: "À qui appartiennent les vidéos?", a3: "À vous, une fois payées. Utilisez-les partout, aussi longtemps que vous voulez. Vos photos et votre logo restent toujours à vous.",
+      q4: "De quoi avez-vous besoin?", a4: "3 à 5 bonnes photos de vos plats ou de votre salle, votre logo si vous en avez un, et 5 minutes pour notre formulaire. Pas de photos? Dites-le-nous, on trouvera une solution.",
+      q5: "Comment payer?", a5: "Par virement Interac, d'avance chaque mois, TVH en sus. Grand Moment demande un dépôt de 50 % et le solde à la livraison.",
+      q6: "Travaillez-vous seulement avec des restaurants?", a6: "Nous avons commencé avec les restaurants et cafés, et nous travaillons aussi avec les petites entreprises qui vendent un produit photographiable : boulangeries, produits de beauté, boutiques et plus.",
+      c_title: "Envie de voir votre établissement en vidéo?", c_lead: "Parlez-nous un peu de votre entreprise et nous créerons votre pub gratuite. Vous préférez en parler en personne? Nous nous déplaçons partout à Ottawa.",
+      c_form: "Remplir le formulaire de 5 minutes", c_form_missing: "Le formulaire en ligne arrive bientôt. D'ici là, écrivez-nous ou appelez-nous.",
+      c_email: "Courriel", c_phone: "Téléphone ou texto", c_area: "Ottawa, Ontario. Nous répondons en un jour ouvrable, en français ou en anglais.",
+      copy: "Copier", copied: "Copié", select: "Sélectionné, faites Ctrl+C",
+      email_missing: "Adresse courriel bientôt disponible", phone_missing: "Numéro bientôt disponible",
+      f_left: "© 2026 Luciole Studio · Ottawa, Ontario", f_right: "Prix en $ CA, TVH en sus"
+    }
+  };
+
+  // Keep the English text written in the page as the English dictionary.
+  document.querySelectorAll("[data-i18n]").forEach(el => { T.en[el.dataset.i18n] ??= el.textContent; });
+  document.querySelectorAll("[data-i18n-html]").forEach(el => { T.en[el.dataset.i18nHtml] ??= el.innerHTML; });
+
+  let lang = "en";
+  function t(key) { return (T[lang] && T[lang][key]) ?? T.en[key] ?? ""; }
+
+  function applyLang(next) {
+    lang = next === "fr" ? "fr" : "en";
+    document.documentElement.lang = lang === "fr" ? "fr-CA" : "en-CA";
+    document.querySelectorAll("[data-i18n]").forEach(el => { el.textContent = t(el.dataset.i18n); });
+    document.querySelectorAll("[data-i18n-html]").forEach(el => { el.innerHTML = t(el.dataset.i18nHtml); });
+    document.querySelectorAll(".lang button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.lang === lang)));
+    renderContact();
+    try { localStorage.setItem("luciole-lang", lang); } catch (e) {}
+  }
+
+  function renderContact() {
+    const email = document.getElementById("email-value");
+    const phone = document.getElementById("phone-value");
+    email.textContent = CONTACT.email || t("email_missing");
+    phone.textContent = CONTACT.phone || t("phone_missing");
+    document.getElementById("copy-email").hidden = !CONTACT.email;
+    document.getElementById("copy-phone").hidden = !CONTACT.phone;
+    const link = document.getElementById("form-link");
+    const missing = document.getElementById("form-missing");
+    if (CONTACT.formUrl) { link.href = CONTACT.formUrl; link.hidden = false; missing.hidden = true; }
+    else { link.hidden = true; missing.hidden = false; }
+  }
+
+  document.querySelectorAll(".copy").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const value = CONTACT[btn.dataset.copy];
+      const done = msg => { btn.textContent = msg; setTimeout(() => { btn.textContent = t("copy"); }, 1600); };
+      const fallback = () => {
+        const node = document.getElementById(btn.dataset.copy + "-value");
+        const range = document.createRange(); range.selectNodeContents(node);
+        const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range);
+        done(t("select"));
+      };
+      try {
+        navigator.clipboard.writeText(value).then(() => done(t("copied")), fallback);
+      } catch (e) { fallback(); }
+    });
+  });
+
+  document.querySelectorAll(".lang button").forEach(b => b.addEventListener("click", () => applyLang(b.dataset.lang)));
+
+  let saved = null;
+  try { saved = localStorage.getItem("luciole-lang"); } catch (e) {}
+  if (!saved && (navigator.language || "").toLowerCase().startsWith("fr")) saved = "fr";
+  applyLang(saved || "en");
+
+  // Fireflies drifting in the hero.
+  (function fireflies() {
+    const canvas = document.getElementById("flies");
+    const ctx = canvas.getContext("2d");
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let w = 0, h = 0, flies = [], dpr = Math.min(window.devicePixelRatio || 1, 2);
+    function resize() {
+      const r = canvas.getBoundingClientRect();
+      w = r.width; h = r.height;
+      canvas.width = w * dpr; canvas.height = h * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const count = Math.round(Math.min(46, w / 26));
+      flies = Array.from({ length: count }, () => ({
+        x: Math.random() * w, y: Math.random() * h,
+        vx: (Math.random() - .5) * .25, vy: (Math.random() - .5) * .2,
+        r: 1 + Math.random() * 1.8, phase: Math.random() * Math.PI * 2, speed: .006 + Math.random() * .012
+      }));
+    }
+    function draw() {
+      ctx.clearRect(0, 0, w, h);
+      for (const f of flies) {
+        const a = reduce ? .55 : .25 + .75 * Math.max(0, Math.sin(f.phase));
+        const g = ctx.createRadialGradient(f.x, f.y, 0, f.x, f.y, f.r * 9);
+        g.addColorStop(0, `rgba(255, 214, 102, ${.9 * a})`);
+        g.addColorStop(.25, `rgba(242, 169, 0, ${.35 * a})`);
+        g.addColorStop(1, "rgba(242, 169, 0, 0)");
+        ctx.fillStyle = g;
+        ctx.beginPath(); ctx.arc(f.x, f.y, f.r * 9, 0, Math.PI * 2); ctx.fill();
+      }
+    }
+    function step() {
+      for (const f of flies) {
+        f.x += f.vx; f.y += f.vy; f.phase += f.speed;
+        f.vx += (Math.random() - .5) * .02; f.vy += (Math.random() - .5) * .02;
+        f.vx = Math.max(-.4, Math.min(.4, f.vx)); f.vy = Math.max(-.35, Math.min(.35, f.vy));
+        if (f.x < -20) f.x = w + 20; if (f.x > w + 20) f.x = -20;
+        if (f.y < -20) f.y = h + 20; if (f.y > h + 20) f.y = -20;
+      }
+      draw();
+      requestAnimationFrame(step);
+    }
+    resize();
+    window.addEventListener("resize", resize);
+    if (reduce) draw(); else requestAnimationFrame(step);
+  })();
+</script>
+</body>
+</html>
