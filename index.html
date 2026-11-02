@@ -133,7 +133,11 @@
   .steps .time { font-size: 13px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-soft); }
 
   .plans { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; align-items: stretch; }
-  .plan { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 28px 26px; display: grid; grid-template-rows: auto auto auto 1fr auto; gap: 10px; min-width: 0; }
+  .plan { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 28px 26px; display: grid; grid-template-rows: auto auto auto 1fr auto auto; gap: 10px; min-width: 0; }
+  .choose { justify-content: center; margin-top: 8px; border: 2px solid var(--ink); color: var(--ink); background: transparent; }
+  .choose:hover { background: var(--ink); color: var(--surface); }
+  .plan.rec .choose { background: var(--glow); border-color: var(--glow); color: var(--glow-ink); }
+  .plan.rec .choose:hover { filter: brightness(1.08); }
   .plan.rec { position: relative; background: var(--night); color: var(--on-night); border: 2px solid var(--glow); box-shadow: 0 18px 40px color-mix(in srgb, var(--glow) 22%, transparent); }
   .plan.rec .pitch, .plan.rec .price small { color: var(--on-night-soft); }
   .plan.rec .fine { color: var(--on-night); border-top-color: color-mix(in srgb, var(--on-night) 20%, transparent); font-weight: 700; }
@@ -323,6 +327,7 @@
               <li data-i18n="spark_3">1 round of changes per video</li>
             </ul>
           </div>
+          <a class="btn choose" data-package="Spark" href="#contact" target="_blank" rel="noopener" data-i18n="choose_spark">Choose Spark</a>
           <p class="fine" data-i18n-html="spark_fine">Month to month, or <b>$212 a month</b> on a 12-month commitment (15% off).</p>
         </article>
         <article class="plan rec">
@@ -339,6 +344,7 @@
               <li data-i18n="glow_5">2 rounds of changes per video</li>
             </ul>
           </div>
+          <a class="btn choose" data-package="Glow" href="#contact" target="_blank" rel="noopener" data-i18n="choose_glow">Choose Glow</a>
           <p class="fine" data-i18n-html="glow_fine">Month to month, or <b>$399 a month</b> on a 3-month commitment. You save $150.</p>
         </article>
         <article class="plan">
@@ -356,6 +362,7 @@
               <li data-i18n="gm_5">Captions and a 2-week posting schedule</li>
             </ul>
           </div>
+          <a class="btn choose" data-package="Grand Moment" href="#contact" target="_blank" rel="noopener" data-i18n="choose_gm">Choose Grand Moment</a>
           <p class="fine" data-i18n="gm_fine">50% deposit to start. Delivered within 7 business days.</p>
         </article>
       </div>
@@ -464,6 +471,7 @@
       per_month: "/ mois", once: "une fois",
       spark_badge: "Mensuel", spark_pitch: "Toute belle histoire commence par une étincelle.",
       spark_1: "4 vidéos verticales d'environ 10 secondes", spark_2: "Créées à partir de vos photos, avec sous-titres et musique sous licence", spark_3: "1 série de modifications par vidéo",
+      choose_spark: "Choisir Spark", choose_glow: "Choisir Glow", choose_gm: "Choisir Grand Moment",
       spark_fine: "Au mois, ou <b>212 $ par mois</b> avec un engagement de 12 mois (15 % de rabais).",
       glow_badge: "Meilleur rapport qualité-prix", glow_pitch: "Que votre entreprise rayonne, mois après mois.",
       glow_1: "8 vidéos d'environ 12 secondes, verticales et carrées", glow_2: "Une vidéo de la promo du mois et un clip pour l'appli de livraison", glow_3: "Sous-titres en anglais, en français ou les deux", glow_4: "Un calendrier de publication et un suivi mensuel", glow_5: "2 séries de modifications par vidéo",
@@ -508,6 +516,8 @@
     renderContact();
     try { localStorage.setItem("luciole-lang", lang); } catch (e) {}
   }
+
+  document.querySelectorAll('.choose').forEach(a => { if (CONTACT.formUrl) a.href = CONTACT.formUrl + '?package=' + encodeURIComponent(a.dataset.package); });
 
   function renderSocial() {
     document.querySelectorAll(".social .ig").forEach(a => { a.hidden = !CONTACT.instagram; if (CONTACT.instagram) a.href = CONTACT.instagram; });
